@@ -1,0 +1,21 @@
+[project]
+name = "rodet"
+version = "0.1.0"
+description = "ArAutos recommender: FastAPI + sklearn + SQLite + static frontend."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic-settings",
+  "python-dotenv",
+  "scikit-learn",
+  "numpy",
+  "scipy",
+  "pandas",
+  "pytest",
+  "httpx",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
