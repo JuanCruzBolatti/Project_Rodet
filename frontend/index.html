@@ -8,10 +8,60 @@
   </head>
   <body>
     <main class="container">
-      <h1>rodet (MVP)</h1>
-      <button id="btn">Probar /api/health</button>
-      <pre id="out"></pre>
+      <header class="header">
+        <div>
+          <h1>rodet</h1>
+          <p class="muted">Explorador de posteos y comentarios (MVP).</p>
+        </div>
+
+        <form id="searchForm" class="search">
+          <input id="q" name="q" placeholder="Buscar (ej: recomendacion)" value="recomendacion" />
+          <input id="limit" name="limit" type="number" min="1" max="200" value="25" />
+          <button type="submit">Buscar</button>
+        </form>
+      </header>
+
+      <section class="grid">
+        <div class="panel">
+          <h2>Posts</h2>
+          <div id="postsMeta" class="muted"></div>
+          <div id="posts" class="list"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Comentarios</h2>
+          <div id="commentsMeta" class="muted">Seleccioná un post…</div>
+          <div id="comments" class="list"></div>
+        </div>
+      </section>
+
+      <hr />
+
+      <section class="panel" style="margin-bottom: 12px;">
+        <h2>Predictor (sklearn)</h2>
+        <form id="predictForm" class="search">
+          <input
+            id="predictText"
+            name="predictText"
+            style="flex: 1;"
+            placeholder="Ej: presupuesto 12 millones, ciudad/ruta, confiable y barato de mantener"
+            value="presupuesto 10 millones, uso ciudad, quiero algo confiable y barato de mantener"
+          />
+          <button type="submit">Predecir</button>
+        </form>
+
+        <div id="predMeta" class="muted" style="margin-top: 10px;"></div>
+        <div id="pred" class="list"></div>
+      </section>
+
+      <hr />
+
+      <section>
+        <h2>Debug</h2>
+        <pre id="debug"></pre>
+      </section>
     </main>
+
     <script src="/static/app.js"></script>
   </body>
 </html>
