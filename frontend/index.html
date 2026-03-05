@@ -38,8 +38,15 @@
       <hr />
 
       <section class="panel" style="margin-bottom: 12px;">
-        <h2>Predictor (sklearn)</h2>
-        <form id="predictForm" class="search">
+        <div style="display:flex; gap:12px; align-items:baseline; justify-content:space-between; flex-wrap:wrap;">
+          <div>
+            <h2 style="margin-bottom:4px;">Predictor (sklearn)</h2>
+            <div id="modelStatus" class="muted">Cargando estado del modelo…</div>
+          </div>
+          <button id="trainBtn" type="button">Entrenar modelo</button>
+        </div>
+
+        <form id="predictForm" class="search" style="margin-top: 10px;">
           <input
             id="predictText"
             name="predictText"

@@ -101,3 +101,13 @@ pre {
   font-size: 0.85rem;
   margin-left: 8px;
 }
+
+#trainBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+#trainBtn:hover { border-color: rgba(255,255,255,0.18); }

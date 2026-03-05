@@ -162,3 +162,47 @@ predictForm.addEventListener("submit", async (e) => {
     setDebug({ error: String(err) });
   }
 });
+
+const modelStatusEl = document.getElementById("modelStatus");
+const trainBtn = document.getElementById("trainBtn");
+
+async function loadModelInfo() {
+  try {
+    const info = await fetchJSON("/api/model/info");
+    if (!info.trained) {
+      modelStatusEl.textContent = "Modelo: NO entrenado (tocá 'Entrenar modelo').";
+      return;
+    }
+    modelStatusEl.textContent =
+      `Modelo: OK | clases: ${info.classes.length} | actualizado: ${info.updated_utc}`;
+  } catch (err) {
+    modelStatusEl.textContent = "No se pudo leer estado del modelo.";
+    setDebug({ error: String(err) });
+  }
+}
+
+async function trainModel() {
+  trainBtn.disabled = true;
+  trainBtn.textContent = "Entrenando…";
+  try {
+    const res = await fetchJSON("/api/train", { method: "POST" });
+    setDebug({ last_train_response: res });
+    if (res.ok) {
+      modelStatusEl.textContent = `Modelo entrenado | samples: ${res.n_samples} | clases: ${res.n_classes}`;
+    } else {
+      modelStatusEl.textContent =
+        `No se pudo entrenar (samples: ${res.n_samples}, clases: ${res.n_classes}).`;
+    }
+  } finally {
+    trainBtn.disabled = false;
+    trainBtn.textContent = "Entrenar modelo";
+    await loadModelInfo();
+  }
+}
+
+trainBtn.addEventListener("click", () => {
+  trainModel().catch((err) => setDebug({ error: String(err) }));
+});
+
+// al iniciar
+loadModelInfo();

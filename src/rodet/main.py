@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 from pathlib import Path
+from datetime import datetime, timezone
 
 from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse
@@ -11,6 +12,7 @@ from rodet.api.schemas import PredictRequest, PredictResponse, TopPrediction, Tr
 from rodet.recommend.dataset import build_training_dataframe
 from rodet.recommend.model import load_model, train_and_save
 from rodet.storage.db import connect, init_db
+from rodet.recommend.model import MODEL_PATH
 
 FRONTEND_DIR = Path(__file__).resolve().parents[2] / "frontend"
 
@@ -30,6 +32,23 @@ app = FastAPI(title="rodet", lifespan=lifespan)
 def health():
     return {"status": "ok"}
 
+@app.get("/api/model/info")
+def model_info():
+    if not MODEL_PATH.exists():
+        return {"trained": False, "path": str(MODEL_PATH), "classes": []}
+
+    model = load_model()
+    mtime = datetime.fromtimestamp(MODEL_PATH.stat().st_mtime, tz=timezone.utc).isoformat()
+    size_bytes = MODEL_PATH.stat().st_size
+
+    classes = [str(c) for c in getattr(model, "classes_", [])]
+    return {
+        "trained": True,
+        "path": str(MODEL_PATH),
+        "updated_utc": mtime,
+        "size_bytes": size_bytes,
+        "classes": classes,
+    }
 
 @app.post("/api/train", response_model=TrainResponse)
 def train():
